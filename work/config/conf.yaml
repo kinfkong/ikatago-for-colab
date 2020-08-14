@@ -1,0 +1,45 @@
+server:
+  listen: 0.0.0.0:2222
+  
+katago:
+  bins:
+    - name: katago
+      path: ./data/bins/katago
+  weights:
+    - name: a # COLAB_WEIGHT_REPLACE_MARKER
+      path: b # COLAB_WEIGHT_REPLACE_MARKER
+  configs:
+    - name: default_gtp
+      path: ./data/configs/default_gtp.cfg
+    - name: 10spermove
+      path: ./data/configs/10spermove.cfg
+    - name: 2stones_handicap
+      path: ./data/configs/2stones_handicap.cfg
+    - name: 3stones_handicap
+      path: ./data/configs/3stones_handicap.cfg
+    - name: 4stones_handicap
+      path: ./data/configs/4stones_handicap.cfg
+    - name: 5stones_handicap
+      path: ./data/configs/5stones_handicap.cfg
+    - name: 6stones_handicap
+      path: ./data/configs/6stones_handicap.cfg
+    - name: 7+stones_handicap
+      path: ./data/configs/7+stones_handicap.cfg
+  defaultBinName: katago
+  defaultWeightName: a # COLAB_WEIGHT_REPLACE_MARKER
+  defaultConfigName: default_gtp
+  customConfigDir: /content/user-data
+
+use_nat: frp
+
+nats: # only the name configured in "user_nat" will be used
+  frp:
+    type: frp
+    config_file: ./config/frpc.txt
+  direct: 
+    type: direct
+    host: 192.168.1.222 # the host or ip that you can connect this server directly
+    port: 2222 # generally, it should equals to the server listen port
+
+users:
+  file: ./userlist.txt
