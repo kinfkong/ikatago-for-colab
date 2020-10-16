@@ -2,7 +2,7 @@
 
 KATAGO_BACKEND=$1
 WEIGHT_FILE=$2
-
+RELEASE_VERSION=1.4.1
 GPU_NAME=`nvidia-smi -q | grep "Product Name" | cut -d":" -f2 | tr -cd '[:alnum:]._-'`
 #GPU_NAME=TeslaT4
 
@@ -47,7 +47,7 @@ cd /content
 apt install --yes libzip4 1>/dev/null
 if [ ! -d work ]
 then
-    wget --quiet https://github.com/kinfkong/ikatago-for-colab/releases/download/1.3.1/work.zip -O work.zip
+    wget --quiet https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/work.zip -O work.zip
     unzip -qq work.zip
 fi
 
@@ -56,7 +56,7 @@ WEIGHT_URL=`grep "^$WEIGHT_FILE " ./weight_urls.txt | cut -d ' ' -f2`
 echo "Using Weight URL: " $WEIGHT_URL
 
 #download the binarires
-wget --quiet https://github.com/kinfkong/ikatago-for-colab/releases/download/1.3.1/katago-$KATAGO_BACKEND -O ./data/bins/katago
+wget --quiet https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/katago-$KATAGO_BACKEND -O ./data/bins/katago
 chmod +x ./data/bins/katago
 
 mkdir -p /root/.katago/
