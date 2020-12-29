@@ -45,11 +45,9 @@ echo "Using Katago Weight: " $WEIGHT_FILE
 
 cd /content
 apt install --yes libzip4 1>/dev/null
-if [ ! -d work ]
-then
-    wget --quiet https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/work.zip -O work.zip
-    unzip -qq work.zip
-fi
+rm -rf work
+wget --quiet https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/work.zip -O work.zip
+unzip -qq work.zip
 
 cd /content/work
 WEIGHT_URL=`grep "^$WEIGHT_FILE " ./weight_urls.txt | cut -d ' ' -f2`
