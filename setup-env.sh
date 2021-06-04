@@ -54,20 +54,18 @@ cd /content/work
 wget https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/weight_urls.txt -O weight_urls.txt
 WEIGHT_URL=`grep "^$WEIGHT_FILE " ./weight_urls.txt | cut -d ' ' -f2`
 echo "Using Weight URL: " $WEIGHT_URL
-
+mkdir -p /content/work/data/bins
+mkdir -p /content/work/data/weights
 #download the binarires
 if [ "$USE_HIGHTHREADS" == "TRUE" ]
 then
-wget --quiet https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/katago-highthread.zip
-unzip katago-highthread.zip
-cp ./katago-$KATAGO_BACKEND-highthread ./data/bins/katago
+  wget https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/katago-highthread.zip
+  unzip katago-highthread.zip
+  cp ./katago-$KATAGO_BACKEND-highthread ./data/bins/katago
 else
-wget https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/katago-$KATAGO_BACKEND -O ./data/bins/katago
+  wget https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/katago-$KATAGO_BACKEND -O ./data/bins/katago
 fi 
 chmod +x ./data/bins/katago
-
-
-
 mkdir -p /root/.katago/
 cp -r ./opencltuning /root/.katago/
 
