@@ -94,16 +94,7 @@ fi
 
 if [ "$KATAGO_BACKEND" == "TRT" ]
 then
-  wget https://github.com/kinfkong/ikatago-for-colab/releases/download/2.0.0/libnvinfer.so.8.2.0 -O ./data/bins/libnvinfer.so.8.2.0
-  wget https://github.com/kinfkong/ikatago-for-colab/releases/download/2.0.0/liblzma.so.5.2.2 -O ./data/bins/liblzma.so.5.2.2
-  wget https://github.com/kinfkong/ikatago-for-colab/releases/download/2.0.0/libunwind.so.8.0.1 -O ./data/bins/libunwind.so.8.0.1
-  cd ./data/bins/
-  ln -s ./libnvinfer.so.8.2.0 ./libnvinfer.so.8
-  ln -s ./liblzma.so.5.2.2 ./liblzma.so.5
-  ln -s ./libunwind.so.8.0.1 ./libunwind.so.8
-  ls -la
-  cd -
-
+  apt-get install libnvinfer8 libnvonnxparsers8 libnvparsers8 libnvinfer-plugin8
 fi
 chmod +x ./change-config.sh
 ./change-config.sh $WEIGHT_FILE "./data/weights/"$WEIGHT_FILE".bin.gz"
