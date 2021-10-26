@@ -4,7 +4,7 @@ server:
 katago:
   bins:
     - name: katago
-      path: ./data/bins/katago
+      path: ./data/bins/run-katago.sh
   weights:
     - name: a # COLAB_WEIGHT_REPLACE_MARKER
       path: b # COLAB_WEIGHT_REPLACE_MARKER
