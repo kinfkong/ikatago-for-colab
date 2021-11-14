@@ -94,6 +94,7 @@ fi
 
 if [ "$KATAGO_BACKEND" == "TRT" ]
 then
+  #  apt-get install libnvinfer8=8.2.0-1+cuda11.4
   apt-get install libnvinfer8 libnvonnxparsers8 libnvparsers8 libnvinfer-plugin8
 fi
 chmod +x ./change-config.sh
