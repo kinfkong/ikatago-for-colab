@@ -11,20 +11,30 @@ katago:
   configs:
     - name: default_gtp
       path: ./data/configs/default_gtp.cfg
-    - name: 10spermove
-      path: ./data/configs/10spermove.cfg
     - name: 2stones_handicap
-      path: ./data/configs/2stones_handicap.cfg
+      path: ./data/configs/default_gtp.cfg
+      overrideConfig: maxVisits=50000,allowResignation=false,resignThreshold=-0.99,playoutDoublingAdvantage=0.38
+      description: 让子棋让2子配置
     - name: 3stones_handicap
-      path: ./data/configs/3stones_handicap.cfg
+      path: ./data/configs/default_gtp.cfg
+      overrideConfig: maxVisits=50000,allowResignation=false,resignThreshold=-0.99,playoutDoublingAdvantage=0.7
+      description: 让子棋让3子配置
     - name: 4stones_handicap
-      path: ./data/configs/4stones_handicap.cfg
+      path: ./data/configs/default_gtp.cfg
+      overrideConfig: maxVisits=50000,allowResignation=false,resignThreshold=-0.99,playoutDoublingAdvantage=1.38
+      description: 让子棋让4子配置
     - name: 5stones_handicap
-      path: ./data/configs/5stones_handicap.cfg
+      path: ./data/configs/default_gtp.cfg
+      overrideConfig: maxVisits=50000,allowResignation=false,resignThreshold=-0.99,playoutDoublingAdvantage=2
+      description: 让子棋让5子配置
     - name: 6stones_handicap
-      path: ./data/configs/6stones_handicap.cfg
+      path: ./data/configs/default_gtp.cfg
+      overrideConfig: maxVisits=50000,allowResignation=false,resignThreshold=-0.99,playoutDoublingAdvantage=2.38
+      description: 让子棋让6子配置
     - name: 7+stones_handicap
-      path: ./data/configs/7+stones_handicap.cfg
+      path: ./data/configs/default_gtp.cfg
+      overrideConfig: maxVisits=50000,allowResignation=false,resignThreshold=-0.99,playoutDoublingAdvantage=2.65,analysisWideRootNoise=0.06
+      description: 让子棋让7子及以上的配置
   defaultBinName: katago
   defaultWeightName: a # COLAB_WEIGHT_REPLACE_MARKER
   defaultConfigName: default_gtp
