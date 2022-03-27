@@ -38,13 +38,16 @@ then
   detect_auto_weight
 fi
 
+BLOCK=`echo $WEIGHT_FILE | sed -n "s/^.*b\([0-9]\+\).*$/\1/p"`
+if [ "$BLOCK" == "" ]
+then
+  BLOCK=`echo $WEIGHT_FILE | sed -n "s/^[^0-9]*\([0-9]\+\)b.*$/\1/p"`
+fi
+
+
 echo "Using GPU: " $GPU_NAME
 echo "Using Katago Backend: " $KATAGO_BACKEND
 echo "Using Katago Weight: " $WEIGHT_FILE
-
-
-
-
 
 cd /content
 apt install --yes libzip4 1>/dev/null
@@ -53,44 +56,31 @@ wget --quiet https://github.com/kinfkong/ikatago-for-colab/releases/download/$RE
 unzip -qq work.zip
 
 cd /content/work
-wget https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/weight_urls.txt -O weight_urls.txt
-WEIGHT_URL=`grep "^$WEIGHT_FILE " ./weight_urls.txt | cut -d ' ' -f2`
-echo "Using Weight URL: " $WEIGHT_URL
 mkdir -p /content/work/data/bins
 mkdir -p /content/work/data/weights
 #download the binarires
-if [ "$USE_HIGHTHREADS" == "TRUE" ]
-then
-  wget https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/katago-highthread.zip
-  unzip katago-highthread.zip
-  cp ./katago-$KATAGO_BACKEND-highthread ./data/bins/katago
-else
-  wget https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/katago-$KATAGO_BACKEND -O ./data/bins/katago
-fi 
+wget https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/katago-$KATAGO_BACKEND -O ./data/bins/katago
+
 chmod +x ./data/bins/katago
 mkdir -p /root/.katago/
 cp -r ./opencltuning /root/.katago/
 
 #download the weights
-if [[ "$WEIGHT_FILE" == "kata1"* ]]
+if [ "$BLOCK" == "20" ]
 then
+  wget --quiet https://github.com/lightvector/KataGo/releases/download/v1.4.5/g170e-b20c256x2-s5303129600-d1228401921.bin.gz -O "./data/weights/"$BLOCK"b.bin.gz"
+elif [ "$BLOCK" == "30" ]
+then
+  wget --quiet https://github.com/lightvector/KataGo/releases/download/v1.4.5/g170-b30c320x2-s4824661760-d1229536699.bin.gz -O "./data/weights/"$BLOCK"b.bin.gz"
+else
   wget --quiet https://github.com/kinfkong/ikatago-for-colab/releases/download/$RELEASE_VERSION/kata1_weights.py -O kata1_weights.py
   python kata1_weights.py $WEIGHT_FILE
-
-  cp /root/.katago/opencltuning/tune6_gpuTeslaK80_x19_y19_c256_mv8.txt /root/.katago/opencltuning/tune6_gpuTeslaK80_x19_y19_c256_mv10.txt
-  cp /root/.katago/opencltuning/tune6_gpuTeslaP100PCIE16GB_x19_y19_c256_mv8.txt /root/.katago/opencltuning/tune6_gpuTeslaP100PCIE16GB_x19_y19_c256_mv10.txt
-  cp /root/.katago/opencltuning/tune6_gpuTeslaP100PCIE16GB_x19_y19_c384_mv8.txt /root/.katago/opencltuning/tune6_gpuTeslaP100PCIE16GB_x19_y19_c384_mv10.txt
-  cp /root/.katago/opencltuning/tune8_gpuTeslaK80_x19_y19_c256_mv8.txt /root/.katago/opencltuning/tune8_gpuTeslaK80_x19_y19_c256_mv10.txt
-  cp /root/.katago/opencltuning/tune8_gpuTeslaP100PCIE16GB_x19_y19_c256_mv8.txt /root/.katago/opencltuning/tune8_gpuTeslaP100PCIE16GB_x19_y19_c256_mv10.txt
-elif [[ "$WEIGHT_URL" == *"zip" ]]
-then
-  WEIGHT_FILE="40b"
-  wget --quiet $WEIGHT_URL
-  unzip g170*.zip 
-  mv ./g170*/*.bin.gz "./data/weights/"$WEIGHT_FILE".bin.gz" 
-else
-  wget --quiet $WEIGHT_URL -O "./data/weights/"$WEIGHT_FILE".bin.gz" 
 fi
+cp /root/.katago/opencltuning/tune6_gpuTeslaK80_x19_y19_c256_mv8.txt /root/.katago/opencltuning/tune6_gpuTeslaK80_x19_y19_c256_mv10.txt
+cp /root/.katago/opencltuning/tune6_gpuTeslaP100PCIE16GB_x19_y19_c256_mv8.txt /root/.katago/opencltuning/tune6_gpuTeslaP100PCIE16GB_x19_y19_c256_mv10.txt
+cp /root/.katago/opencltuning/tune6_gpuTeslaP100PCIE16GB_x19_y19_c384_mv8.txt /root/.katago/opencltuning/tune6_gpuTeslaP100PCIE16GB_x19_y19_c384_mv10.txt
+cp /root/.katago/opencltuning/tune8_gpuTeslaK80_x19_y19_c256_mv8.txt /root/.katago/opencltuning/tune8_gpuTeslaK80_x19_y19_c256_mv10.txt
+cp /root/.katago/opencltuning/tune8_gpuTeslaP100PCIE16GB_x19_y19_c256_mv8.txt /root/.katago/opencltuning/tune8_gpuTeslaP100PCIE16GB_x19_y19_c256_mv10.txt
 
 if [ "$KATAGO_BACKEND" == "TRT" ]
 then
@@ -98,6 +88,7 @@ then
   apt-get install libnvinfer8 libnvonnxparsers8 libnvparsers8 libnvinfer-plugin8
 fi
 chmod +x ./change-config.sh
-./change-config.sh $WEIGHT_FILE "./data/weights/"$WEIGHT_FILE".bin.gz"
+
+./change-config.sh $BLOCK"b" "./data/weights/"$BLOCK"b.bin.gz"
 
 chmod +x ./ikatago-server
