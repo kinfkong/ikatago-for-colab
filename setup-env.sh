@@ -43,7 +43,10 @@ if [ "$BLOCK" == "" ]
 then
   BLOCK=`echo $WEIGHT_FILE | sed -n "s/^[^0-9]*\([0-9]\+\)b.*$/\1/p"`
 fi
-
+if [ "$BLOCK" == "" ]
+then
+  BLOCK="40"
+fi
 
 echo "Using GPU: " $GPU_NAME
 echo "Using Katago Backend: " $KATAGO_BACKEND

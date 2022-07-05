@@ -39,6 +39,7 @@ katago:
   defaultWeightName: a # COLAB_WEIGHT_REPLACE_MARKER
   defaultConfigName: default_gtp
   customConfigDir: /content/user-data
+  enableWeightsDetectionInDir: ./data/weights
 
 use_nat: frp
 
